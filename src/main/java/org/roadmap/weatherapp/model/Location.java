@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "locations")
-public class Location {
+public class Location extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('locations_id_seq'")

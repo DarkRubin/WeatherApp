@@ -10,7 +10,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "sessions")
-public class Session {
+public class UserSession extends Model {
     @Id
     @Column(name = "id", nullable = false, length = Integer.MAX_VALUE)
     private String id;

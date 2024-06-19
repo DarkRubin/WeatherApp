@@ -9,7 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('users_id_seq'")
