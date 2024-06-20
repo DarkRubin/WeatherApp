@@ -1,0 +1,40 @@
+:root {
+    --color1: #0bb5dc;
+    --color2: #0c67bf;
+}
+
+
+header, footer {
+    padding: 30px 0;
+    background: #0bb5dc;
+    background: linear-gradient(to right,  var(--color1) 0%,var(--color2) 100%);
+}
+
+/*.btn-itd {*/
+/*    background-color: var(--color2);*/
+/*    margin: 0 auto;*/
+/*    padding: 8px 30px;*/
+/*    border: #0bb5dc 1px;*/
+/*    display: block;*/
+/*}*/
+
+.form-sign-up {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.form-sign-up .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-sign-up input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-sign-up input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

@@ -1,26 +1,30 @@
 package org.roadmap.weatherapp.dao;
 
+import org.hibernate.Session;
 import org.roadmap.weatherapp.model.User;
 
 public class UserDao implements DAO<User>{
 
     @Override
-    public Class<User> save(User user) {
+    public User save(User user) {
+        try (Session session = sessionFactory.openSession()) {
+
+        }
         return null;
     }
 
     @Override
-    public Class<User> search(User user) {
+    public User search(User user) {
         return null;
     }
 
     @Override
-    public Class<User> update(User user) {
+    public User update(User user) {
         return null;
     }
 
     @Override
-    public Class<User> delete(User user) {
-        return null;
+    public void delete(User user) {
+
     }
 }

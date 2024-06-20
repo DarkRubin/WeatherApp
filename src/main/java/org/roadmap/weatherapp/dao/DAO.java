@@ -1,16 +1,19 @@
 package org.roadmap.weatherapp.dao;
 
+import org.hibernate.SessionFactory;
 import org.roadmap.weatherapp.model.Model;
 
 public interface DAO<L extends Model> {
 
-    Class<L> save(L l);
+    SessionFactory sessionFactory = DbUtils.getSessionFactory();
 
-    Class<L> search(L l);
+    L save(L l);
 
-    Class<L> update(L l);
+    L search(L l);
 
-    Class<L> delete(L l);
+    L update(L l);
+
+    void delete(L l);
 
 }
 
