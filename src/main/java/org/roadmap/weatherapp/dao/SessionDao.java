@@ -5,6 +5,8 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.roadmap.weatherapp.model.UserSession;
 
+import java.util.Optional;
+
 public class SessionDao implements DAO<UserSession> {
 
     @Override
@@ -17,11 +19,12 @@ public class SessionDao implements DAO<UserSession> {
     }
 
     @Override
-    public UserSession search(UserSession userSession) {
+    public Optional<UserSession> search(UserSession userSession) {
         try (Session session = sessionFactory.openSession()) {
-            session.persist(userSession);
+            return session.createQuery("from UserSession where user = :user", UserSession.class)
+                    .setParameter("user", userSession.getUser())
+                    .uniqueResultOptional();
         }
-        return userSession;
     }
 
     @Override
@@ -33,6 +36,8 @@ public class SessionDao implements DAO<UserSession> {
 
     @Override
     public void delete(UserSession userSession) {
-
+        try (Session session = sessionFactory.openSession()) {
+            session.remove(userSession);
+        }
     }
 }

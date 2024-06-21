@@ -3,28 +3,38 @@ package org.roadmap.weatherapp.dao;
 import org.hibernate.Session;
 import org.roadmap.weatherapp.model.User;
 
+import java.util.Optional;
+
 public class UserDao implements DAO<User>{
 
     @Override
     public User save(User user) {
         try (Session session = sessionFactory.openSession()) {
-
+            session.persist(user);
         }
-        return null;
+        return user;
     }
 
     @Override
-    public User search(User user) {
-        return null;
+    public Optional<User> search(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from User where login = :login", User.class)
+                    .setParameter("login", user.getLogin())
+                    .uniqueResultOptional();
+        }
     }
 
     @Override
     public User update(User user) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            return session.merge(user);
+        }
     }
 
     @Override
     public void delete(User user) {
-
+        try (Session session = sessionFactory.openSession()) {
+            session.remove(user);
+        }
     }
 }

@@ -1,7 +1,11 @@
 package org.roadmap.weatherapp.dao;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.roadmap.weatherapp.model.Location;
+
+import java.util.List;
+import java.util.Optional;
 
 public class LocationDao implements DAO<Location> {
 
@@ -9,21 +13,40 @@ public class LocationDao implements DAO<Location> {
 
     @Override
     public Location save(Location location) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            session.persist(location);
+        }
+        return location;
     }
 
     @Override
-    public Location search(Location location) {
-        return null;
+    public Optional<Location> search(Location location) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Location where user = :user", Location.class)
+                    .setParameter("user", location.getUser())
+                    .uniqueResultOptional();
+        }
+    }
+
+    public List<Location> searchAll(Location location) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Location where user = :user", Location.class)
+                    .setParameter("user", location.getUser())
+                    .getResultList();
+        }
     }
 
     @Override
     public Location update(Location location) {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            return session.merge(location);
+        }
     }
 
     @Override
     public void delete(Location location) {
-
+        try (Session session = sessionFactory.openSession()) {
+            session.remove(location);
+        }
     }
 }

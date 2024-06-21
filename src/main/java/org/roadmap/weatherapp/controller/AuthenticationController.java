@@ -21,7 +21,7 @@ public class AuthenticationController extends HttpServlet {
 
         String message = validate(email, password);
         if (message.equals("valid")) {
-            service.startSession();
+            service.startSession(email, password);
         } else {
             request.setAttribute("message", message);
             getServletContext().getRequestDispatcher("/authorization").forward(request, response);
