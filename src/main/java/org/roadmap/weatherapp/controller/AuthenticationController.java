@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.roadmap.weatherapp.service.SessionService;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ public class AuthenticationController extends HttpServlet {
     private final SessionService service = new SessionService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+//        HttpSession session = request.getSession();
+//        session.setAttribute("");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         request.getParameter("remember");
@@ -22,6 +25,7 @@ public class AuthenticationController extends HttpServlet {
         String message = validate(email, password);
         if (message.equals("valid")) {
             service.startSession(email, password);
+            response.sendRedirect("/main");
         } else {
             request.setAttribute("message", message);
             getServletContext().getRequestDispatcher("/authorization").forward(request, response);

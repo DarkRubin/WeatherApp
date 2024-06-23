@@ -1,8 +1,15 @@
 package org.roadmap.weatherapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
 
@@ -12,7 +19,8 @@ import java.time.Instant;
 @Table(name = "sessions")
 public class UserSession extends Model {
     @Id
-    @Column(name = "id", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "id", nullable = false)
+    @UuidGenerator
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

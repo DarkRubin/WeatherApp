@@ -7,7 +7,7 @@ import org.hibernate.cfg.Configuration;
 @UtilityClass
 public class DbUtils {
 
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
