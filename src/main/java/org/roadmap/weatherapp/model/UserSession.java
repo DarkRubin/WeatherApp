@@ -8,14 +8,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "sessions")
 public class UserSession extends Model {
     @Id
@@ -30,5 +33,9 @@ public class UserSession extends Model {
     @Column(name = "expires_at")
     private Instant expiresAt;
 
-
+    public UserSession(User user, int lifeTimeHours) {
+        this.user = user;
+        Instant date = new Date().toInstant();
+        this.expiresAt = date.plusSeconds(lifeTimeHours * 3600L);
+    }
 }

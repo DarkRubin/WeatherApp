@@ -20,10 +20,12 @@ public class SessionDao implements DAO<UserSession> {
 
     @Override
     public Optional<UserSession> search(UserSession userSession) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from UserSession where user = :user", UserSession.class)
-                    .setParameter("user", userSession.getUser())
-                    .uniqueResultOptional();
+        return search(userSession.getId());
+    }
+
+    public Optional<UserSession> search(String id) {
+        try (Session session = sessionFactory.openSession()){
+            return Optional.ofNullable(session.get(UserSession.class, id));
         }
     }
 

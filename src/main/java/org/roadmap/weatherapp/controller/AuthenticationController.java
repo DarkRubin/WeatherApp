@@ -6,45 +6,51 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.roadmap.weatherapp.exceptions.IncorrectEmailOrPasswordException;
+import org.roadmap.weatherapp.exceptions.UserAlreadyExistException;
+import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.service.SessionService;
+import org.roadmap.weatherapp.service.UserService;
 
 import java.io.IOException;
 
 @WebServlet(name = "AuthenticationController", value = "/authentication/*")
 public class AuthenticationController extends HttpServlet {
 
-    private final SessionService service = new SessionService();
+    private final SessionService sessionService = new SessionService();
+    private final UserService userService = new UserService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//        HttpSession session = request.getSession();
-//        session.setAttribute("");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        request.getParameter("remember");
 
-        String message = validate(email, password);
-        if (message.equals("valid")) {
-            service.startSession(email, password);
-            response.sendRedirect("/main");
-        } else {
-            request.setAttribute("message", message);
-            getServletContext().getRequestDispatcher("/authorization").forward(request, response);
+        User user = null;
+        try {
+            user = userService.singIn(email, password);
+        } catch (IncorrectEmailOrPasswordException e) {
+            request.setAttribute("message", e.getMessage());
+            getServletContext().getRequestDispatcher("/Authorization").forward(request, response);
         }
-    }
-
-    private String validate(String email, String password) {
-        if (!email.contains("@")) {
-            return "Email must contain: '@'";
-        }
-        String[] emailParts = email.split("@");
-        if (emailParts.length > 2) {
-            return "Email must contain only one: '@'";
-        }
-        return "valid";
+        HttpSession session = request.getSession();
+        session.setAttribute("uuid", sessionService.startSession(user).toString());
+        response.sendRedirect("/main");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        User user = null;
+        try {
+            user = userService.singUp(email, password);
+        } catch (UserAlreadyExistException e) {
+            request.setAttribute("message", e.getMessage());
+            getServletContext().getRequestDispatcher("/Registration").forward(request, response);
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("uuid", sessionService.startSession(user));
+        response.sendRedirect("/main");
 
     }
 }
