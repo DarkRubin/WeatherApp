@@ -1,7 +1,6 @@
 package org.roadmap.weatherapp.dao;
 
 
-import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.roadmap.weatherapp.model.UserSession;
 
@@ -10,10 +9,11 @@ import java.util.Optional;
 public class SessionDao implements DAO<UserSession> {
 
     @Override
-    @Transactional
     public UserSession save(UserSession userSession) {
         try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
             session.persist(userSession);
+            session.getTransaction().commit();
         }
         return userSession;
     }

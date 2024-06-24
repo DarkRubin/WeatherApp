@@ -10,6 +10,8 @@
         <property name="connection.username">postgres</property>
         <property name="connection.password">west60load</property>
         <property name="hibernate.show_sql ">true</property>
+        <property name="format_sql">true</property>
+
         <property name="hbm2ddl.auto">update</property>
         <mapping class="org.roadmap.weatherapp.model.User"/>
         <mapping class="org.roadmap.weatherapp.model.Location"/>
