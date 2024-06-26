@@ -5,6 +5,8 @@
          version="5.0">
 
 
-
+   <welcome-file-list>
+       <welcome-file>Main.html</welcome-file>
+   </welcome-file-list>
 
 </web-app>

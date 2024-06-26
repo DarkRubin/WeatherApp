@@ -7,6 +7,8 @@ import org.roadmap.weatherapp.exceptions.UserNotAuthorized;
 import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.model.UserSession;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 
@@ -24,10 +26,11 @@ public class SessionService {
         return dao.search(uuid).orElseThrow(UserNotAuthorized::new).getUser();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
         DAO<User> dao = new UserDao();
         User user = dao.search(new User("admin", "hpWuh3sdh781")).get();
         new SessionService().startSession(user);
+        System.out.println(new LocationService().searchLocation("New-York"));
         System.out.println(user);
     }
 }
