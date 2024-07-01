@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Title</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
 <header>
@@ -19,14 +19,15 @@
 			<div class="col-1"></div>
 			<div class="col-2">
 				<div class="itd_sing_up">
-					<a href="" class="btn btn-itd btn-secondary text-uppercase">Sing in</a>
+					<a th:href="@{~/Registration.html}" class="btn btn-itd btn-primary text-uppercase">Sing
+						up</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </header>
-<main class="form-sign-up">
-	<form action="/authentication/sing-in" method="get" >
+<main class="form-sign-up w-100 m-auto">
+	<form th:attr="action=@{~/authentication}" method="post">
 		<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
 		<div class="form-floating">
@@ -44,6 +45,7 @@
 				Remember me
 			</label>
 		</div>
+		<input type="hidden" name="isRegistration" value="false">
 		<button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
 	</form>
 </main>

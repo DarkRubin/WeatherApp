@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Results</title>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/styles.css">
 </head>
 <body>
 <header>
@@ -17,7 +17,7 @@
 				<h1 class="text-center text-white">Weather</h1>
 			</div>
 			<div class="col-6">
-				<form action="/Search.html" class="form-text align-items-center row row-cols-lg-auto g-2">
+				<form action="Search.html" class="form-text align-items-center row row-cols-lg-auto g-2">
 					<div class="col-12">
 						<label class="visually-hidden" for="city-name">Enter city name:</label>
 						<input type="search" id="city-name" placeholder="Seoul" class="form-control">
@@ -28,27 +28,27 @@
 				</form>
 			</div>
 			<div class="itd_sing_link col g-2">
-				<a href="/Authorization.html" class="btn btn btn-primary text-nowrap">Sing in</a>
+				<a th:href="@{~/Authorization.html}" class="btn btn btn-primary text-nowrap">Sing in</a>
 			</div>
 			<div class="itd_sing_link col g-2">
-				<a href="/Registration.html" class="btn btn-primary text-nowrap">Sing up</a>
+				<a th:href="@{~/Registration.html}" class="btn btn-primary text-nowrap">Sing up</a>
 			</div>
 			<div class="col"></div>
 		</div>
 	</div>
 </header>
 <section>
-	<div class="container">
-		<!--/*@thymesVar id="locationsToShow" type="java.util.List<org.roadmap.weatherapp.dto.LocationDTO>"*/-->
-		<div class="row" th:each="location : ${param.get(locationsToShow)}">
-      <div class="col-4">
-	      <span th:text="${location.getName}"></span>
-	      <div>
+<!--	<div class="container">-->
+<!--		&lt;!&ndash;/*@thymesVar id="locationsToShow" type="java.util.List<org.roadmap.weatherapp.dto.LocationDTO>"*/&ndash;&gt;-->
+<!--		<div class="row" th:each="location : ${param.get(locationsToShow)}">-->
+<!--      <div class="col-4">-->
+<!--	      <span th:text="${location.getName}"></span>-->
+<!--	      <div>-->
 
-	      </div>
-      </div>
-		</div>
-	</div>
+<!--	      </div>-->
+<!--      </div>-->
+<!--		</div>-->
+<!--	</div>-->
 </section>
 
 
