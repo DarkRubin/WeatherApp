@@ -5,8 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Title</title>
-	<link rel="stylesheet" href="../../css/bootstrap.min.css">
-	<link rel="stylesheet" href="../../css/styles.css">
+	<link rel="stylesheet" href="../../webapp/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../webapp/css/styles.css">
 </head>
 <body>
 <header>
@@ -19,7 +19,7 @@
 			<div class="col-1"></div>
 			<div class="col-2">
 				<div class="itd_sing_up">
-					<a th:href="@{~/Authorization.html}" href=""
+					<a th:href="@{/authentication/sing-in}"
 					   class="btn btn-itd btn-primary text-uppercase">Sing in</a>
 				</div>
 			</div>
@@ -27,15 +27,15 @@
 	</div>
 </header>
 <main class="form-sign-up w-100 m-auto">
-	<form th:action="@{~/authentication}" method="post">
+	<form th:action="@{/authentication}" method="post">
 		<h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
 		<div class="form-floating">
-			<input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+			<input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
 			<label for="email">Email address</label>
 		</div>
 		<div class="form-floating">
-			<input type="password" class="form-control" id="password" placeholder="Password" required>
+			<input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
 			<label for="password">Password</label>
 		</div>
 		<input type="hidden" name="isRegistration" value="true">
@@ -44,6 +44,6 @@
 </main>
 
 
-<script src="../../bootstrap.bundle.min.js"></script>
+<script src="../../webapp/bootstrap.bundle.min.js"></script>
 </body>
 </html>

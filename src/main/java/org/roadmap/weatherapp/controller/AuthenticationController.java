@@ -11,46 +11,41 @@ import org.roadmap.weatherapp.exceptions.UserAlreadyExistException;
 import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.service.SessionService;
 import org.roadmap.weatherapp.service.UserService;
+import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
+
 
 @WebServlet(name = "AuthenticationController", value = "/authentication/*")
 public class AuthenticationController extends HttpServlet {
 
+    private final ApplicationController controller = new ApplicationController();
     private final SessionService sessionService = new SessionService();
     private final UserService userService = new UserService();
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        User user = null;
-        try {
-            user = userService.singIn(email, password);
-        } catch (IncorrectEmailOrPasswordException e) {
-            request.setAttribute("message", e.getMessage());
-            getServletContext().getRequestDispatcher("/Authorization").forward(request, response);
-        }
-        HttpSession session = request.getSession();
-        session.setAttribute("uuid", sessionService.startSession(user).toString());
-        response.sendRedirect("/main");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String templateName = req.getContextPath().equals("sing-in") ? "Authorization" : "Registration";
+        WebContext context = controller.getWebContext(req, resp, getServletContext());
+        controller.process(templateName, resp.getWriter(), context);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        boolean isRegistration = Boolean.parseBoolean(request.getParameter("isRegistration"));
 
-        User user = null;
+        User user = new User(email, password);
         try {
-            user = userService.singUp(email, password);
-        } catch (UserAlreadyExistException e) {
+            user = isRegistration ? userService.singUp(user) : userService.singIn(user);
+        } catch (UserAlreadyExistException | IncorrectEmailOrPasswordException e) {
             request.setAttribute("message", e.getMessage());
-            getServletContext().getRequestDispatcher("/Registration").forward(request, response);
+            getServletContext().getRequestDispatcher(isRegistration ? "/Registration.html" : "/Authorization.html")
+                    .forward(request, response);
         }
-        HttpSession session = request.getSession();
         session.setAttribute("uuid", sessionService.startSession(user));
         response.sendRedirect("/main");
-
     }
 }

@@ -9,7 +9,6 @@ import org.roadmap.weatherapp.model.UserSession;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 
 public class SessionService {
@@ -17,9 +16,8 @@ public class SessionService {
     public static final int SESSION_LIFE_TIME_IN_HOURS = 6;
     private final SessionDao dao = new SessionDao();
 
-    public UUID startSession(User user) {
-        UserSession session = dao.save(new UserSession(user, SESSION_LIFE_TIME_IN_HOURS));
-        return UUID.fromString(session.getId());
+    public String startSession(User user) {
+        return dao.save(new UserSession(user, SESSION_LIFE_TIME_IN_HOURS)).getId();
     }
 
     public User getSession(String uuid) {

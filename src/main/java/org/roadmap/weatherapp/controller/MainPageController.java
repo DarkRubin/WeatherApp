@@ -1,6 +1,5 @@
 package org.roadmap.weatherapp.controller;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +8,8 @@ import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
 
-@WebServlet(name = "LocationController", value = "/main")
-public class LocationController extends HttpServlet {
+@WebServlet(name = "MainPageController", value = "/main")
+public class MainPageController extends HttpServlet {
 
     private final ApplicationController controller = new ApplicationController();
 
@@ -21,7 +20,7 @@ public class LocationController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
     }
 }

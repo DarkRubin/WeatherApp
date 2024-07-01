@@ -6,7 +6,17 @@
 
 
    <welcome-file-list>
-       <welcome-file>Main.html</welcome-file>
+       <welcome-file>/main</welcome-file>
    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>AuthenticationController</servlet-name>
+        <servlet-class>org.roadmap.weatherapp.controller.AuthenticationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthenticationController</servlet-name>
+        <url-pattern>/authentication</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>
