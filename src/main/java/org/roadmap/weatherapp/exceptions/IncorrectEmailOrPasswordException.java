@@ -1,6 +1,6 @@
 package org.roadmap.weatherapp.exceptions;
 
-public class IncorrectEmailOrPasswordException extends RuntimeException {
+public class IncorrectEmailOrPasswordException extends Exception {
 
     @Override
     public String getMessage() {
