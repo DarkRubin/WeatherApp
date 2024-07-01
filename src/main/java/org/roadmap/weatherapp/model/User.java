@@ -38,12 +38,4 @@ public class User extends Model {
         this.login = login;
         this.password = password;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
