@@ -1,6 +1,5 @@
 package org.roadmap.weatherapp.controller;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,13 +24,13 @@ public class AuthenticationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String templateName = req.getContextPath().equals("sing-in") ? "Authorization" : "Registration";
+        String templateName = req.getPathInfo().equals("/sing-in") ? "Authorization" : "Registration";
         WebContext context = controller.getWebContext(req, resp, getServletContext());
         controller.process(templateName, resp.getWriter(), context);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -42,8 +41,7 @@ public class AuthenticationController extends HttpServlet {
             user = isRegistration ? userService.singUp(user) : userService.singIn(user);
         } catch (UserAlreadyExistException | IncorrectEmailOrPasswordException e) {
             request.setAttribute("message", e.getMessage());
-            getServletContext().getRequestDispatcher(isRegistration ? "/Registration.html" : "/Authorization.html")
-                    .forward(request, response);
+            doGet(request, response);
         }
         session.setAttribute("uuid", sessionService.startSession(user));
         response.sendRedirect("/main");
