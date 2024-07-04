@@ -44,6 +44,6 @@ public class AuthenticationController extends HttpServlet {
             doGet(request, response);
         }
         session.setAttribute("uuid", sessionService.startSession(user));
-        response.sendRedirect("/main");
+        response.sendRedirect(request.getContextPath() + "/main");
     }
 }

@@ -3,6 +3,7 @@ package org.roadmap.weatherapp.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.roadmap.weatherapp.model.Location;
+import org.roadmap.weatherapp.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +29,10 @@ public class LocationDao implements DAO<Location> {
         }
     }
 
-    public List<Location> searchAll(Location location) {
+    public List<Location> searchUserLocation(User user) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from Location where user = :user", Location.class)
-                    .setParameter("user", location.getUser())
+                    .setParameter("user", user)
                     .getResultList();
         }
     }

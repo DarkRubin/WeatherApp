@@ -34,7 +34,7 @@ public class LocationService {
     }
 
     public List<Location> getUserLocation(User user) {
-        return user.getLocations();
+        return dao.searchUserLocation(user);
     }
 
 }
