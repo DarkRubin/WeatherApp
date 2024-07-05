@@ -32,18 +32,17 @@ public class AuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        boolean isRegistration = Boolean.parseBoolean(request.getParameter("isRegistration"));
-
-        User user = new User(email, password);
+        User user = new User();
+        user.setLogin(request.getParameter("email"));
+        user.setPassword(request.getParameter("password"));
         try {
-            user = isRegistration ? userService.signUp(user) : userService.signIn(user);
+            user = request.getPathInfo().equals("/sign-up") ? userService.signUp(user) : userService.signIn(user);
+            session.setAttribute("uuid", sessionService.startSession(user));
+            session.setAttribute("user", user);
+            response.sendRedirect(request.getContextPath() + "/main");
         } catch (UserAlreadyExistException | IncorrectEmailOrPasswordException e) {
             request.setAttribute("message", e.getMessage());
             doGet(request, response);
         }
-        session.setAttribute("uuid", sessionService.startSession(user));
-        response.sendRedirect(request.getContextPath() + "/main");
     }
 }
