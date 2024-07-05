@@ -8,7 +8,7 @@ import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
 
-@WebServlet(name = "MainPageController", urlPatterns = "/main", loadOnStartup = 1)
+@WebServlet(name = "MainPageController", urlPatterns = "/main")
 public class MainPageController extends HttpServlet {
 
     private final ApplicationController controller = new ApplicationController();

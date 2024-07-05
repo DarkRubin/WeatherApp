@@ -17,10 +17,10 @@
 				<h1 class="text-center text-white">Weather</h1>
 			</div>
 			<div class="col-6">
-				<form action="Search.html" th:attr="action=@{/Search.html}" class="form-text align-items-center row row-cols-lg-auto g-2">
+				<form action="Search.html" th:attr="action=@{/search}" class="form-text align-items-center row row-cols-lg-auto g-2">
 					<div class="col-12">
 						<label class="visually-hidden" for="city-name">Enter city name:</label>
-						<input type="search" id="city-name" placeholder="Seoul" class="form-control">
+						<input type="search" id="city-name" name="city" placeholder="Seoul" class="form-control">
 					</div>
 					<div class="col-12">
 						<button class="btn btn-primary" type="submit">Search</button>
@@ -28,10 +28,10 @@
 				</form>
 			</div>
 			<div class="itd_sing_link col g-2">
-				<a href="Authorization.html" th:href="@{/authentication/sing-in}" class="btn btn btn-primary text-nowrap">Sing in</a>
+				<a href="Authorization.html" th:href="@{/authentication/sign-in}" class="btn btn btn-primary text-nowrap">Sign in</a>
 			</div>
 			<div class="itd_sing_link col g-2">
-				<a href="Registration.html" th:href="@{/authentication/sing-up}" class="btn btn-primary text-nowrap">Sing up</a>
+				<a href="Registration.html" th:href="@{/authentication/sign-up}" class="btn btn-primary text-nowrap">Sign up</a>
 			</div>
 			<div class="col"></div>
 		</div>

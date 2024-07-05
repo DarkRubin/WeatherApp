@@ -24,7 +24,7 @@ public class AuthenticationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String templateName = req.getPathInfo().equals("/sing-in") ? "Authorization" : "Registration";
+        String templateName = req.getPathInfo().equals("/sign-in") ? "Authorization" : "Registration";
         WebContext context = controller.getWebContext(req, resp, getServletContext());
         controller.process(templateName, resp.getWriter(), context);
     }
@@ -38,7 +38,7 @@ public class AuthenticationController extends HttpServlet {
 
         User user = new User(email, password);
         try {
-            user = isRegistration ? userService.singUp(user) : userService.singIn(user);
+            user = isRegistration ? userService.signUp(user) : userService.signIn(user);
         } catch (UserAlreadyExistException | IncorrectEmailOrPasswordException e) {
             request.setAttribute("message", e.getMessage());
             doGet(request, response);

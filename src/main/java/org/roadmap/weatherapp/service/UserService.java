@@ -10,11 +10,11 @@ public class UserService {
 
     private final DAO<User> dao = new UserDao();
 
-    public User singIn(User user) throws IncorrectEmailOrPasswordException {
+    public User signIn(User user) throws IncorrectEmailOrPasswordException {
         return dao.search(user).orElseThrow(IncorrectEmailOrPasswordException::new);
     }
 
-    public User singUp(User user) throws UserAlreadyExistException {
+    public User signUp(User user) throws UserAlreadyExistException {
         try {
             return dao.save(user);
         } catch (Exception e) {
