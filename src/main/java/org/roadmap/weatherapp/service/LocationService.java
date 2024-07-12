@@ -19,7 +19,7 @@ import java.util.List;
 public class LocationService {
 
     private final static String secretKey = "22120095a8780ea5616d67f0bab415e7";
-    private final static String url = "https://api.openweathermap.org/geo/1.0/direct?q=%s&appid=%s";
+    private final static String url = "https://api.openweathermap.org/geo/1.0/direct?q=%s&limit=5&appid=%s";
     public final ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private final LocationDao dao = new LocationDao();
 
