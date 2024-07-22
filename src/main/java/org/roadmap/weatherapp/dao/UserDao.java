@@ -1,18 +1,20 @@
 package org.roadmap.weatherapp.dao;
 
-import jakarta.transaction.Transactional;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.roadmap.weatherapp.model.Location;
 import org.roadmap.weatherapp.model.User;
 
 import java.util.Optional;
 
-public class UserDao implements DAO<User>{
+public class UserDao implements DAO<User> {
 
     @Override
-    @Transactional
     public User save(User user) {
         try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
             session.persist(user);
+            tx.commit();
         }
         return user;
     }
