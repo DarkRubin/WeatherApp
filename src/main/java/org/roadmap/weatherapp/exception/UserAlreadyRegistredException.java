@@ -1,6 +1,6 @@
-package org.roadmap.weatherapp.exceptions;
+package org.roadmap.weatherapp.exception;
 
-public class UserAlreadyExistException extends Exception {
+public class UserAlreadyRegistredException extends Exception {
 
     @Override
     public String getMessage() {
