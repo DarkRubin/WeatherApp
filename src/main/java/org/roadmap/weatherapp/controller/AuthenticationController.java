@@ -5,8 +5,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.roadmap.weatherapp.exceptions.IncorrectEmailOrPasswordException;
-import org.roadmap.weatherapp.exceptions.UserAlreadyExistException;
+import org.roadmap.weatherapp.exception.IncorrectEmailOrPasswordException;
+import org.roadmap.weatherapp.exception.UserAlreadyRegistredException;
 import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.service.SessionService;
 import org.roadmap.weatherapp.service.UserService;
@@ -26,6 +26,7 @@ public class AuthenticationController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String templateName = req.getPathInfo().equals("/sign-in") ? "Authorization" : "Registration";
         WebContext context = controller.getWebContext(req, resp, getServletContext());
+        context.setVariable("error", req.getAttribute("message"));
         controller.process(templateName, resp.getWriter(), context);
     }
 
@@ -36,11 +37,12 @@ public class AuthenticationController extends HttpServlet {
         user.setLogin(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
         try {
-            user = request.getPathInfo().equals("/sign-up") ? userService.signUp(user) : userService.signIn(user);
-            session.setAttribute("uuid", sessionService.startSession(user));
+            user = request.getPathInfo().equals("/sign-up") ?
+                    userService.signUp(user) : userService.signIn(user);
+            response.addCookie(sessionService.startSession(user));
             session.setAttribute("user", user);
             response.sendRedirect(request.getContextPath() + "/main");
-        } catch (UserAlreadyExistException | IncorrectEmailOrPasswordException e) {
+        } catch (UserAlreadyRegistredException | IncorrectEmailOrPasswordException e) {
             request.setAttribute("message", e.getMessage());
             doGet(request, response);
         }
