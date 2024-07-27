@@ -25,7 +25,7 @@ public class Location extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('locations_id_seq'")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
     @Column(name = "name", length = Integer.MAX_VALUE)

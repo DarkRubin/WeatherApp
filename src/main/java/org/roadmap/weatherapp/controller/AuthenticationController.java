@@ -1,6 +1,8 @@
 package org.roadmap.weatherapp.controller;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,13 +20,19 @@ import java.io.IOException;
 @WebServlet(name = "AuthenticationController", value = "/authentication/*")
 public class AuthenticationController extends HttpServlet {
 
+    private static final int COST = 5;
     private final ApplicationController controller = new ApplicationController();
     private final SessionService sessionService = new SessionService();
     private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String templateName = req.getPathInfo().equals("/sign-in") ? "Authorization" : "Registration";
+        String templateName = switch (req.getPathInfo()) {
+            case "/log-out" -> logOut(req);
+            case "/sign-up" -> "Registration";
+            case "/sign-in" -> "Authorization";
+            default -> throw new IllegalStateException("Unexpected value: " + req.getPathInfo());
+        };
         WebContext context = controller.getWebContext(req, resp, getServletContext());
         context.setVariable("error", req.getAttribute("message"));
         controller.process(templateName, resp.getWriter(), context);
@@ -33,9 +41,11 @@ public class AuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        User user = new User();
-        user.setLogin(request.getParameter("email"));
-        user.setPassword(request.getParameter("password"));
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+//        validate(email, password);
+//        String hashedPassword = BCrypt.withDefaults().hashToString(COST, password.toCharArray());
+        User user = new User(email, password);
         try {
             user = request.getPathInfo().equals("/sign-up") ?
                     userService.signUp(user) : userService.signIn(user);
@@ -47,4 +57,22 @@ public class AuthenticationController extends HttpServlet {
             doGet(request, response);
         }
     }
+
+    private String logOut(HttpServletRequest req) {
+        req.getSession().removeAttribute("user");
+        for (Cookie cookie : req.getCookies()) {
+            if (cookie.getName().equals("SESSION_ID")) {
+                sessionService.delete(cookie.getValue());
+            }
+        }
+        return "MainForNotAuthorized";
+    }
+
+    private void validate(String email, String password) throws IncorrectEmailOrPasswordException {
+        if (email == null) {
+
+            throw new IncorrectEmailOrPasswordException();
+        }
+    }
+
 }

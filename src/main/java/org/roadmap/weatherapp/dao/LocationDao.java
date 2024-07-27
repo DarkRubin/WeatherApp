@@ -1,21 +1,20 @@
 package org.roadmap.weatherapp.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.roadmap.weatherapp.model.Location;
 import org.roadmap.weatherapp.model.User;
 
-import java.util.List;
 import java.util.Optional;
 
 public class LocationDao implements DAO<Location> {
 
-    private final SessionFactory sessionFactory = DbUtils.getSessionFactory();
-
     @Override
     public Location save(Location location) {
         try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
             session.persist(location);
+            tx.commit();
         }
         return location;
     }
@@ -29,14 +28,6 @@ public class LocationDao implements DAO<Location> {
         }
     }
 
-    public List<Location> searchUserLocation(User user) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Location where user = :user", Location.class)
-                    .setParameter("user", user)
-                    .getResultList();
-        }
-    }
-
     @Override
     public Location update(Location location) {
         try (Session session = sessionFactory.openSession()) {
@@ -46,8 +37,22 @@ public class LocationDao implements DAO<Location> {
 
     @Override
     public void delete(Location location) {
+        String latitude = String.valueOf(location.getLatitude());
+        String longitude = String.valueOf(location.getLongitude());
+        delete(latitude, longitude, location.getUser());
+    }
+
+    public void delete(String latitude, String longitude, User user) {
         try (Session session = sessionFactory.openSession()) {
-            session.remove(location);
+            Transaction tx = session.beginTransaction();
+            session.createMutationQuery("delete from Location where user = :user " +
+                            "and latitude = :latitude " +
+                            "and longitude = :longitude")
+                    .setParameter("user", user)
+                    .setParameter("latitude", latitude)
+                    .setParameter("longitude", longitude)
+                    .executeUpdate();
+            tx.commit();
         }
     }
 }

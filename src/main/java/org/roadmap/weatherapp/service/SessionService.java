@@ -1,14 +1,14 @@
 package org.roadmap.weatherapp.service;
 
-import org.roadmap.weatherapp.dao.DAO;
+import jakarta.servlet.http.Cookie;
 import org.roadmap.weatherapp.dao.SessionDao;
-import org.roadmap.weatherapp.dao.UserDao;
-import org.roadmap.weatherapp.exceptions.UserNotAuthorized;
+import org.roadmap.weatherapp.exception.SessionExpiresException;
+import org.roadmap.weatherapp.exception.UserNotAuthorizedException;
 import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.model.UserSession;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.Date;
 
 
 public class SessionService {
@@ -16,19 +16,28 @@ public class SessionService {
     public static final int SESSION_LIFE_TIME_IN_HOURS = 6;
     private final SessionDao dao = new SessionDao();
 
-    public String startSession(User user) {
-        return dao.save(new UserSession(user, SESSION_LIFE_TIME_IN_HOURS)).getId();
+    public Cookie startSession(User user) {
+        String uuid = dao.save(new UserSession(user, SESSION_LIFE_TIME_IN_HOURS)).getId();
+        Cookie cookie = new Cookie("SESSION_ID", uuid);
+        cookie.setMaxAge(3600 * SESSION_LIFE_TIME_IN_HOURS);
+        return cookie;
     }
 
-    public User getSession(String uuid) {
-        return dao.search(uuid).orElseThrow(UserNotAuthorized::new).getUser();
+    public void delete(String uuid) {
+        UserSession session = new UserSession();
+        session.setId(uuid);
+        dao.delete(session);
     }
 
-    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
-        DAO<User> dao = new UserDao();
-        User user = dao.search(new User("admin", "hpWuh3sdh781")).get();
-        new SessionService().startSession(user);
-        System.out.println(new LocationService().searchLocation("New-York"));
-        System.out.println(user);
+    public User findUser(String uuid) {
+        UserSession session = dao.search(uuid).orElseThrow(UserNotAuthorizedException::new);
+        Instant instant = new Date().toInstant();
+        Instant expiresAt = session.getExpiresAt();
+        if (instant.isAfter(expiresAt)) {
+            dao.delete(session);
+            throw new SessionExpiresException();
+        } else {
+            return session.getUser();
+        }
     }
 }

@@ -30,10 +30,10 @@ public class User extends Model {
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "login", length = Integer.MAX_VALUE, unique = true)
+    @Column(name = "login", length = 320, unique = true)
     private String login;
 
-    @Column(name = "password", length = Integer.MAX_VALUE)
+    @Column(name = "password", length = 32)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

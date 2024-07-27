@@ -3,21 +3,22 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Weather app</title>
-	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="../../webapp/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../../webapp/css/styles.css">
+	<link rel="stylesheet" type="text/css" media="all" href="../../webapp/static/css/bootstrap.min.css" th:href="@{static/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" media="all" href="../../webapp/static/css/styles.css" th:href="@{/static/css/styles.css}">
 </head>
 <body>
 <header>
 	<div class="container">
 		<div class="row">
 			<div class="col-3">
-				<h1 class="text-center text-white">Weather</h1>
+				<a th:href="@{/main}">
+					<h1 class="text-center text-white text-nowrap">Weather</h1>
+				</a>
 			</div>
 			<div class="col-6">
-				<form action="Search.html" th:attr="action=@{/search}" class="form-text align-items-center row row-cols-lg-auto g-2">
+				<form th:action="@{/search}" class="form-text align-items-center row row-cols-lg-auto g-2">
 					<div class="col-12">
 						<label class="visually-hidden" for="city-name">Enter city name:</label>
 						<input type="search" id="city-name" name="city" placeholder="Seoul" class="form-control">
@@ -27,19 +28,33 @@
 					</div>
 				</form>
 			</div>
-			<div class="itd_sing_link col g-2">
-				<a href="Authorization.html" th:href="@{/authentication/sign-in}" class="btn btn btn-primary text-nowrap">Sign in</a>
+			<div class="col">
+				<h5 class="g-2" th:text="${login}">login</h5>
 			</div>
 			<div class="itd_sing_link col g-2">
-				<a href="Registration.html" th:href="@{/authentication/sign-up}" class="btn btn-primary text-nowrap">Sign up</a>
+				<a th:href="@{/authentication/log-out}" class="btn btn-primary text-nowrap">Log out</a>
 			</div>
 			<div class="col"></div>
 		</div>
 	</div>
 </header>
+<div th:if="${error != null}">
+	<h1 th:text="${error}"></h1>
+</div>
 	<div class="container">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-6 d-inline-block" th:each="location : ${locationsToShow}" th:inline="text">
+				<h3 th:text="${location.getName()}"></h3>
+				<h4 th:text="${location.getLatitude()}"></h4>
+				<h4 th:text="${location.getLongitude()}"></h4>
+				<h3 th:text="${location.getTemp()}"></h3>
+				<h3 th:text="${location.getCountry()}"></h3>
+				<h3 th:text="${location.getWeather()}"></h3>
+				<form th:action="@{/main}" method="post">
+					<input type="hidden" name="latitude" th:value="${location.latitude}">
+					<input type="hidden" name="longitude" th:value="${location.longitude}">
+					<input type="submit" class="btn btn-danger" value="Delete">
+				</form>
 			</div>
 		</div>
 	</div>

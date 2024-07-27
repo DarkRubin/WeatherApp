@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 import org.roadmap.weatherapp.model.Location;
 import org.roadmap.weatherapp.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements DAO<User> {
@@ -17,6 +18,14 @@ public class UserDao implements DAO<User> {
             tx.commit();
         }
         return user;
+    }
+
+    public List<Location> getLocations(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createSelectionQuery("from Location where user = :user", Location.class)
+                    .setParameter("user", user)
+                    .getResultList();
+        }
     }
 
     @Override

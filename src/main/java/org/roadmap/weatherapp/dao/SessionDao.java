@@ -2,6 +2,7 @@ package org.roadmap.weatherapp.dao;
 
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.roadmap.weatherapp.model.UserSession;
 
 import java.util.Optional;
@@ -11,9 +12,9 @@ public class SessionDao implements DAO<UserSession> {
     @Override
     public UserSession save(UserSession userSession) {
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            Transaction tx = session.beginTransaction();
             session.persist(userSession);
-            session.getTransaction().commit();
+            tx.commit();
         }
         return userSession;
     }
@@ -24,7 +25,7 @@ public class SessionDao implements DAO<UserSession> {
     }
 
     public Optional<UserSession> search(String id) {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             return Optional.ofNullable(session.get(UserSession.class, id));
         }
     }

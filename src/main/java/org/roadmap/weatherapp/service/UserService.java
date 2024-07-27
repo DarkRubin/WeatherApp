@@ -2,8 +2,8 @@ package org.roadmap.weatherapp.service;
 
 import org.roadmap.weatherapp.dao.DAO;
 import org.roadmap.weatherapp.dao.UserDao;
-import org.roadmap.weatherapp.exceptions.IncorrectEmailOrPasswordException;
-import org.roadmap.weatherapp.exceptions.UserAlreadyExistException;
+import org.roadmap.weatherapp.exception.IncorrectEmailOrPasswordException;
+import org.roadmap.weatherapp.exception.UserAlreadyRegistredException;
 import org.roadmap.weatherapp.model.User;
 
 public class UserService {
@@ -14,11 +14,12 @@ public class UserService {
         return dao.search(user).orElseThrow(IncorrectEmailOrPasswordException::new);
     }
 
-    public User signUp(User user) throws UserAlreadyExistException {
+    public User signUp(User user) throws UserAlreadyRegistredException {
         try {
             return dao.save(user);
         } catch (Exception e) {
-            throw new UserAlreadyExistException();
+            throw new UserAlreadyRegistredException();
         }
+
     }
 }
