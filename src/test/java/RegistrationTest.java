@@ -23,7 +23,7 @@ public class RegistrationTest {
         UserService userService = new UserService();
         UserDao userDao = new UserDao();
         try {
-            User returned = userService.signUp(userToSave);
+            User returned = userService.signUp(userToSave.getLogin(), userToSave.getPassword());
             Optional<User> searched = userDao.search(userToSave);
             assert searched.isPresent();
             User userInDB = searched.get();

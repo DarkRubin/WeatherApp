@@ -1,6 +1,5 @@
 package org.roadmap.weatherapp.controller;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -20,7 +19,6 @@ import java.io.IOException;
 @WebServlet(name = "AuthenticationController", value = "/authentication/*")
 public class AuthenticationController extends HttpServlet {
 
-    private static final int COST = 5;
     private final ApplicationController controller = new ApplicationController();
     private final SessionService sessionService = new SessionService();
     private final UserService userService = new UserService();
@@ -43,12 +41,10 @@ public class AuthenticationController extends HttpServlet {
         HttpSession session = request.getSession();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-//        validate(email, password);
-//        String hashedPassword = BCrypt.withDefaults().hashToString(COST, password.toCharArray());
-        User user = new User(email, password);
         try {
-            user = request.getPathInfo().equals("/sign-up") ?
-                    userService.signUp(user) : userService.signIn(user);
+//            validate(email, password);
+            User user = request.getPathInfo().equals("/sign-up") ?
+                    userService.signUp(email, password) : userService.signIn(email, password);
             response.addCookie(sessionService.startSession(user));
             session.setAttribute("user", user);
             response.sendRedirect(request.getContextPath() + "/main");
@@ -69,7 +65,7 @@ public class AuthenticationController extends HttpServlet {
     }
 
     private void validate(String email, String password) throws IncorrectEmailOrPasswordException {
-        if (email == null) {
+        if (email == null || password == null) {
 
             throw new IncorrectEmailOrPasswordException();
         }

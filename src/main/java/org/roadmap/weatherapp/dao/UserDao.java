@@ -31,9 +31,8 @@ public class UserDao implements DAO<User> {
     @Override
     public Optional<User> search(User user) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from User where login = :login and password = :password", User.class)
+            return session.createQuery("from User where login = :login", User.class)
                     .setParameter("login", user.getLogin())
-                    .setParameter("password", user.getPassword()) //todo
                     .uniqueResultOptional();
         }
     }
