@@ -21,7 +21,7 @@ public class LogOutController extends HttpServlet {
         req.getSession().removeAttribute("user");
         req.removeAttribute("user");
         Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie.getName().equals("user"))
+                .filter(cookie -> cookie.getName().equals("SESSION_ID"))
                 .findFirst()
                 .ifPresent(cookie -> sessionService.delete(cookie.getValue()));
         WebContext ctx = ApplicationController.getWebContext(req, resp);

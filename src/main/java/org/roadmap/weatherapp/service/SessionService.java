@@ -33,11 +33,11 @@ public class SessionService {
         }
     }
 
-    public Cookie startSession(User user) {
+    public Cookie startSession(User user, String contextPath) {
         String uuid = dao.save(new UserSession(user, sessionLifetimeInHours)).getId();
         Cookie cookie = new Cookie("SESSION_ID", uuid);
         cookie.setMaxAge(3600 * sessionLifetimeInHours);
-        cookie.setPath("/WeatherApp");
+        cookie.setPath(contextPath);
         return cookie;
     }
 

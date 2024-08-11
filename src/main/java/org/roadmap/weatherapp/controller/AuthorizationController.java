@@ -32,7 +32,8 @@ public class AuthorizationController extends HttpServlet {
         String password = req.getParameter("password");
         try {
             User user = userService.signIn(email, password);
-            resp.addCookie(sessionService.startSession(user));
+            String contextPath = req.getContextPath();
+            resp.addCookie(sessionService.startSession(user, contextPath));
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (IncorrectEmailOrPasswordException e) {

@@ -5,7 +5,6 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.roadmap.weatherapp.exception.LocationAlreadyAddedException;
 import org.roadmap.weatherapp.model.Location;
-import org.roadmap.weatherapp.model.User;
 
 import java.util.Optional;
 

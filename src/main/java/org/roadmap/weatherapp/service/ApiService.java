@@ -6,7 +6,6 @@ import org.roadmap.weatherapp.dto.LocationDTO;
 import org.roadmap.weatherapp.dto.LocationForecast;
 import org.roadmap.weatherapp.exception.PropertiesFileNotFoundException;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -15,7 +14,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 
 public class ApiService {
@@ -44,20 +42,23 @@ public class ApiService {
     public List<LocationDTO> getLocationByName(String cityName) throws IOException, InterruptedException {
         String url = String.format(properties.getProperty("url_for_name_search"), cityName, appid);
         String responseBody = sendGetRequest(url);
-        return objectMapper.readValue(responseBody, new TypeReference<>() {});
+        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
     }
 
     public List<LocationDTO> getLocationByCoordinates(String latitude, String longitude)
             throws IOException, InterruptedException {
         String url = String.format(properties.getProperty("url_for_coord_search"), latitude, longitude, appid);
         String responseBody = sendGetRequest(url);
-        return objectMapper.readValue(responseBody, new TypeReference<>() {});
+        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
     }
 
     public LocationForecast getLocationForecast(BigDecimal latitude, BigDecimal longitude)
             throws IOException, InterruptedException {
         String url = String.format(properties.getProperty("url_for_forecast"), latitude, longitude, appid);
         String responseBody = sendGetRequest(url);
-        return objectMapper.readValue(responseBody, new TypeReference<>() {});
+        return objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
     }
 }
