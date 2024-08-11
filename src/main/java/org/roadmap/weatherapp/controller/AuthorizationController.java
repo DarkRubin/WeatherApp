@@ -37,7 +37,7 @@ public class AuthorizationController extends HttpServlet {
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (IncorrectEmailOrPasswordException e) {
-            context.setVariable("error", e.getMessage());
+            context.setVariable("error", "Email or password is incorrect");
             ApplicationController.process("Authorization", resp.getWriter(), context);
         }
     }
