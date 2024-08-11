@@ -1,28 +1,71 @@
 package org.roadmap.weatherapp.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationForecast {
+
+    private Integer id;
 
     private String name;
 
-    private String country;
+    private List<Weather> weather = new ArrayList<>();
 
-    private String weather;
+    @JsonSetter("sys")
+    private Info info = new Info();
 
-    private int temp;
+    @JsonSetter("main")
+    private Main main = new Main();
 
-    private BigDecimal latitude;
+    @JsonSetter("coord")
+    private Coordinates coordinates = new Coordinates();
 
-    private BigDecimal longitude;
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Info {
+
+        private String country;
+
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Weather {
+
+        private String description;
+
+        private String icon;
+
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Main {
+
+        private int temp;
+
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Coordinates {
+
+        @JsonSetter("lat")
+        private BigDecimal latitude;
+
+        @JsonSetter("lon")
+        private BigDecimal longitude;
+
+    }
 
 }
+
+

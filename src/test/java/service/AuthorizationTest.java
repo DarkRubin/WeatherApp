@@ -1,21 +1,16 @@
-import org.junit.jupiter.api.BeforeAll;
+package service;
+
 import org.junit.jupiter.api.Test;
 import org.roadmap.weatherapp.dao.UserDao;
-import org.roadmap.weatherapp.exception.UserAlreadyRegistredException;
+import org.roadmap.weatherapp.exception.UserAlreadyRegisteredException;
 import org.roadmap.weatherapp.model.User;
 import org.roadmap.weatherapp.service.UserService;
 
 import java.util.Optional;
 
-public class RegistrationTest {
+class AuthorizationTest {
 
     User userToSave = new User("myEmail@mail.com", "password");
-
-    @BeforeAll
-    static void DbInit() {
-
-
-    }
 
 
     @Test
@@ -31,9 +26,14 @@ public class RegistrationTest {
             assert returned.getId().equals(userInDB.getId());
             assert returned.getLogin().equals(userInDB.getLogin());
             assert returned.getPassword().equals(userInDB.getPassword());
-        } catch (UserAlreadyRegistredException e) {
+        } catch (UserAlreadyRegisteredException e) {
             assert false;
         }
+    }
+
+    @Test
+    void signInTest() {
+
     }
 
 }

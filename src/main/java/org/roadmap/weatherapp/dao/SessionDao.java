@@ -40,7 +40,11 @@ public class SessionDao implements DAO<UserSession> {
     @Override
     public void delete(UserSession userSession) {
         try (Session session = sessionFactory.openSession()) {
-            session.remove(userSession);
+            Transaction tx = session.beginTransaction();
+            session.createMutationQuery("delete from UserSession where id = :id")
+                    .setParameter("id", userSession.getId())
+                    .executeUpdate();
+            tx.commit();
         }
     }
 }

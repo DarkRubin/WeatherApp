@@ -3,7 +3,7 @@ package org.roadmap.weatherapp.service;
 import org.roadmap.weatherapp.dao.DAO;
 import org.roadmap.weatherapp.dao.UserDao;
 import org.roadmap.weatherapp.exception.IncorrectEmailOrPasswordException;
-import org.roadmap.weatherapp.exception.UserAlreadyRegistredException;
+import org.roadmap.weatherapp.exception.UserAlreadyRegisteredException;
 import org.roadmap.weatherapp.model.User;
 
 import static at.favre.lib.crypto.bcrypt.BCrypt.*;
@@ -22,14 +22,9 @@ public class UserService {
         } else throw new IncorrectEmailOrPasswordException();
     }
 
-    public User signUp(String email, String password) throws UserAlreadyRegistredException {
-        try {
-            String hashedPassword = withDefaults().hashToString(COST, password.toCharArray());
-            User user = new User(email, hashedPassword);
-            return dao.save(user);
-        } catch (Exception e) {
-            throw new UserAlreadyRegistredException();
-        }
-
+    public User signUp(String email, String password) throws UserAlreadyRegisteredException {
+        String hashedPassword = withDefaults().hashToString(COST, password.toCharArray());
+        User user = new User(email, hashedPassword);
+        return dao.save(user);
     }
 }

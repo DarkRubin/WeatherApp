@@ -2,6 +2,8 @@ package org.roadmap.weatherapp.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+import org.roadmap.weatherapp.exception.LocationAlreadyAddedException;
 import org.roadmap.weatherapp.model.Location;
 import org.roadmap.weatherapp.model.User;
 
@@ -13,8 +15,13 @@ public class LocationDao implements DAO<Location> {
     public Location save(Location location) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
-            session.persist(location);
-            tx.commit();
+            try {
+                session.persist(location);
+                tx.commit();
+            } catch (ConstraintViolationException e) {
+                tx.rollback();
+                throw new LocationAlreadyAddedException();
+            }
         }
         return location;
     }
@@ -37,21 +44,9 @@ public class LocationDao implements DAO<Location> {
 
     @Override
     public void delete(Location location) {
-        String latitude = String.valueOf(location.getLatitude());
-        String longitude = String.valueOf(location.getLongitude());
-        delete(latitude, longitude, location.getUser());
-    }
-
-    public void delete(String latitude, String longitude, User user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
-            session.createMutationQuery("delete from Location where user = :user " +
-                            "and latitude = :latitude " +
-                            "and longitude = :longitude")
-                    .setParameter("user", user)
-                    .setParameter("latitude", latitude)
-                    .setParameter("longitude", longitude)
-                    .executeUpdate();
+            session.remove(location);
             tx.commit();
         }
     }

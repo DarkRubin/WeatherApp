@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <a th:href="@{/main}">
+        <h1 class="text-center text-white text-nowrap">Weather</h1>
+      </a>
+    </div>
+    <div class="col-6">
+      <form th:action="@{/search}" method="get" class="form-text align-items-center row g-2">
+        <div class="col-auto">
+          <label class="visually-hidden" for="city-name">Enter city name:</label>
+          <input type="search" name="cityName" id="city-name" placeholder="Seoul" class="form-control"
+                 required="required">
+        </div>
+        <div class="col-2">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-2 row" th:if="${login != null}">
+      <h5 class="g-2 login" th:text="${login}"></h5>
+      <div class="itd_sing_link g-2">
+        <a th:href="@{/authentication/log-out}" class="btn btn-primary text-nowrap">Log out</a>
+      </div>
+    </div>
+    <div class="col-2 row" th:unless="${login != null}">
+      <div class="itd_sing_link col-auto g-2">
+        <a th:href="@{/authentication/sign-in}" class="btn btn btn-primary text-nowrap">Sing in</a>
+      </div>
+      <div class="itd_sing_link col-auto g-2">
+        <a th:href="@{/authentication/sign-up}" class="btn btn-primary text-nowrap">Sing up</a>
+      </div>
+    </div>
+    <div class="col-1"></div>
+    </div>
+  </div>
+</body>
+</html>

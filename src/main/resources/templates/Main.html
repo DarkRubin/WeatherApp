@@ -9,54 +9,45 @@
 	<link rel="stylesheet" type="text/css" media="all" href="../../webapp/static/css/styles.css" th:href="@{/static/css/styles.css}">
 </head>
 <body>
-<header>
-	<div class="container">
-		<div class="row">
-			<div class="col-3">
-				<a th:href="@{/main}">
-					<h1 class="text-center text-white text-nowrap">Weather</h1>
-				</a>
-			</div>
-			<div class="col-6">
-				<form th:action="@{/search}" class="form-text align-items-center row row-cols-lg-auto g-2">
-					<div class="col-12">
-						<label class="visually-hidden" for="city-name">Enter city name:</label>
-						<input type="search" id="city-name" name="city" placeholder="Seoul" class="form-control">
-					</div>
-					<div class="col-12">
-						<button class="btn btn-primary" type="submit">Search</button>
-					</div>
-				</form>
-			</div>
-			<div class="col">
-				<h5 class="g-2" th:text="${login}">login</h5>
-			</div>
-			<div class="itd_sing_link col g-2">
-				<a th:href="@{/authentication/log-out}" class="btn btn-primary text-nowrap">Log out</a>
-			</div>
-			<div class="col"></div>
-		</div>
-	</div>
-</header>
+<header th:include="header.html"></header>
+<br>
 <div th:if="${error != null}">
-	<h1 th:text="${error}"></h1>
+	<h2 th:text="${error}"></h2>
 </div>
-	<div class="container">
-		<div class="row">
-			<div class="col-6 d-inline-block" th:each="location : ${locationsToShow}" th:inline="text">
-				<h3 th:text="${location.getName()}"></h3>
-				<h4 th:text="${location.getLatitude()}"></h4>
-				<h4 th:text="${location.getLongitude()}"></h4>
-				<h3 th:text="${location.getTemp()}"></h3>
-				<h3 th:text="${location.getCountry()}"></h3>
-				<h3 th:text="${location.getWeather()}"></h3>
+<div class="container px-4">
+	<div class="row">
+		<div class="col-6 d-inline-block" th:each="location, count : ${locationsToShow}" th:inline="text">
+			<h3 class="text-center" th:text="${location.name}">London</h3>
+			<div class="col-8">
+				<h4 th:text="${location.coordinates.latitude}">51.5073219</h4>
+				<h4 th:text="${location.coordinates.longitude}">-0.1276474</h4>
+				<h3 th:text="${location.main.temp + '°C'}">18°C</h3>
+				<h3 th:text="${location.info.country}">GB</h3>
+				<h3 th:text="${location.weather.get(0).description}">scattered clouds</h3>
 				<form th:action="@{/main}" method="post">
-					<input type="hidden" name="latitude" th:value="${location.latitude}">
-					<input type="hidden" name="longitude" th:value="${location.longitude}">
+					<input type="hidden" name="id" th:value="${location.id}">
+					<input type="hidden" name="latitude" th:value="${location.coordinates.latitude}">
+					<input type="hidden" name="longitude" th:value="${location.coordinates.longitude}">
 					<input type="submit" class="btn btn-danger" value="Delete">
 				</form>
 			</div>
+			<div class="col-4">
+				<img th:src="@{/static/icons/{icon} (icon = ${location.weather.get(0).icon + '.png'})}" alt="">
+			</div>
+			<div th:if="${count.even}">
+				<br>
+			</div>
 		</div>
 	</div>
+</div>
+<footer>
+	<nav aria-label="Pagination" th:if="${totalPages > 1}">
+		<ul class="pagination justify-content-center">
+			<li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:classappend="${page == currentPage} ? 'disabled'">
+				<a class="page-link" th:href="@{/main?page={page}(page = ${page})}" th:text="${page}"></a>
+			</li>
+		</ul>
+	</nav>
+</footer>
 </body>
 </html>

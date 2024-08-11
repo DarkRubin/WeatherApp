@@ -1,5 +1,6 @@
 package org.roadmap.weatherapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,12 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationDTO {
 
     private String name;
 
+    @JsonSetter("state")
     private String region;
 
     private String country;

@@ -33,7 +33,7 @@ public class User extends Model {
     @Column(name = "login", length = 320, unique = true)
     private String login;
 
-    @Column(name = "password", length = 32)
+    @Column(name = "password", length = 64)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

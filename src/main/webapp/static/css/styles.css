@@ -7,19 +7,30 @@
 }
 
 
-header, footer {
+header {
     padding: 30px 0;
     background: #0bb5dc;
     background: linear-gradient(to right,  var(--color1) 0%,var(--color2) 100%);
 }
 
-/*.btn-itd {*/
-/*    background-color: var(--color2);*/
-/*    margin: 0 auto;*/
-/*    padding: 8px 30px;*/
-/*    border: #0bb5dc 1px;*/
-/*    display: block;*/
-/*}*/
+footer {
+    padding: 30px 0;
+    background: #0bb5dc;
+    background: linear-gradient(to right,  var(--color1) 0%,var(--color2) 100%);
+    clear: both;
+    position: fixed;
+    height: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.login {
+    color: white;
+    line-height: 3em;
+}
 
 .form-sign-up {
     max-width: 330px;
